@@ -1,35 +1,42 @@
 'use strict';
 
-const DomElement = function (selector, height, width, bg, fontSize) {
+const DomElement = function (selector, height, width, bg, fontSize, position) {
 
     this.selector = selector;
     this.height = height;
     this.width = width;
     this.bg = bg;
     this.fontSize = fontSize;
+    this.position = position;
 };
 
 DomElement.prototype.newElem = function () {
-    const div = document.createElement('div');
+    const elems = document.createElement('div');
 
     if (this.selector[0] == '.') {
-        div.classList.add('block');
+        const elems = document.createElement('div');
+        elems.classList.add('block');
     }
-    else { div.setAttribute('id', 'best') }
+    else {
+        const elems = document.createElement('p');
+        elems.setAttribute('id', 'best')
+    }
 
-    div.style.height = this.height;
-    div.style.width = this.width;
-    div.style.backgroundColor = this.bg;
-    div.style.fontSize = this.fontSize;
-    div.style.position = this.position;
-    div.style.top = this.top + 'px';
-    div.style.left = this.left + 'px';
+    elems.style.cssText = `
+    height:${this.height}px; 
+    width:${this.width}px; 
+    background-color:${this.bg};
+    font-size:${this.fontSize};
+    top:${this.top}px;
+    left:${this.left}px;
+    position:${this.position};
+    `;
 
-    return div;
+    return elems;
 }
 
-const elem = new DomElement('.block', '100px', '100px', 'magenta', '15pt');
-elem.position = "absolute";
+const elem = new DomElement('.block', '100', '100', 'magenta', '15pt', 'absolute');
+
 elem.top = 0;
 elem.left = 0;
 
@@ -42,7 +49,7 @@ document.addEventListener('keydown', function (event) {
     if (event.code == 'ArrowDown') {
         elem.top += 10;
     }
-    if (event.code == 'ArrowUp'&& elem.top >= 10) {
+    if (event.code == 'ArrowUp' && elem.top >= 10) {
         elem.top -= 10;
     }
     if (event.code == 'ArrowRight') {
