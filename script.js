@@ -1,11 +1,4 @@
 'use strict';
-const selector = prompt('Укажите селектор');
-const height = prompt('Укажите высоту') + 'px';
-const width = prompt('Укажите ширину') + 'px';
-const bg = prompt('Укажите цвет');
-const fontSize = prompt('Укажите размер шрифта') + 'pt';
-const text = prompt('текст блока');
-
 
 const DomElement = function (selector, height, width, bg, fontSize) {
 
@@ -28,18 +21,38 @@ DomElement.prototype.newElem = function () {
     div.style.width = this.width;
     div.style.backgroundColor = this.bg;
     div.style.fontSize = this.fontSize;
-    div.textContent = text;
+    div.style.position = this.position;
+    div.style.top = this.top + 'px';
+    div.style.left = this.left + 'px';
 
     return div;
 }
 
+const elem = new DomElement('.block', '100px', '100px', 'magenta', '15pt');
+elem.position = "absolute";
+elem.top = 0;
+elem.left = 0;
 
+document.addEventListener("DOMContentLoaded", () => {
+    const div = elem.newElem();
+    document.body.append(div);
+});
 
+document.addEventListener('keydown', function (event) {
+    if (event.code == 'ArrowDown') {
+        elem.top += 10;
+    }
+    if (event.code == 'ArrowUp'&& elem.top >= 10) {
+        elem.top -= 10;
+    }
+    if (event.code == 'ArrowRight') {
+        elem.left += 10;
+    }
+    if (event.code == 'ArrowLeft' && elem.left >= 10) {
+        elem.left -= 10;
+    }
 
-const elem = new DomElement(selector, height, width, bg, fontSize);
+    document.body.innerHTML = "";
+    document.body.append(elem.newElem())
 
-const div = elem.newElem();
-
-document.body.append(div);
-
-console.log(div);
+});
